@@ -1,27 +1,43 @@
-const scores = [
-    { name: 'Alice', score: 96 },
-    { name: 'Billy', score: 83 },
-    { name: 'Cindy', score: 91 },
-    { name: 'David', score: 96 },
-    { name: 'Emily', score: 88 }
-];
+const margin = {
+    top: 10,
+    right: 20,
+    bottom: 60,
+    left: 40
+}
+const width = 425 - margin.left - margin.right;
+const height = 625 - margin.top - margin.bottom;
 
-const update = d3.select('.chart')
-    .selectAll('div')
-    .data(scores, function(d) { return d ? d.name : this.innerText; })
-    .style('color', 'blue');
+const chart = d3.select('.chart')
+    .append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-const enter = update.enter()
-    .append('div')
-    .text(d => d.name + ': ' + d.score)
-    .style('color', 'green');
+chart.append('rect')
+    .attr('width', width)
+    .attr('height', height)
+    .style('fill', 'lightblue')
+    .style('stroke', 'green')
 
-update.exit()
-    .remove();
+const yScale = d3.scaleLinear()
+    .domain([0, 100])
+    .range([height, 0]);
 
-update.merge(enter)
-    .style('width', d => d.score+ 'px')
-    .style('height', '50px')
-    .style('background-color', 'lightblue')
-    .style('margin', '5px')
-    .style('border', '1px solid black');
+const yAxis = d3.axisLeft(yScale)
+    .ticks(5);
+
+const xScale = d3.scaleTime()
+    .domain([new Date(2018, 0, 1, 6), new Date(2018, 0, 1, 9)])
+    .range([0, width]);
+
+const xAxis = d3.axisBottom(xScale)
+    .ticks(5)
+    .tickSize(10)
+    .tickPadding(5);
+
+chart.call(yAxis);
+chart
+    .append('g')
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxis);
