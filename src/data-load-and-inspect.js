@@ -10,7 +10,7 @@ d3.tsv('/data/data.tsv',function (data) {
 
 // min age
 d3.json('/data/data.json',function (data) {
-    const min = d3.min(data,function (d) {
+    const min = d3.min(data, function (d) {
         return d.age;
     });
     console.log(min); // 13
@@ -18,7 +18,7 @@ d3.json('/data/data.json',function (data) {
 
 // max age
 d3.json('/data/data.json',function (data) {
-    const max = d3.max(data,function (d) {
+    const max = d3.max(data, function (d) {
         return d.age;
     });
     console.log(max); // 38
